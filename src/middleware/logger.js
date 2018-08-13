@@ -1,8 +1,8 @@
 // Logs all http requests
 
-var logger = function(req, res, next){
-	console.log(new Date(), req.method, req.url);
-	next();
-}
+const logger = async (ctx, next) => {
+  console.log(new Date(), ctx.method, ctx.url);
+  await next();
+};
 
 module.exports = logger;

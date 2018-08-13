@@ -1,19 +1,29 @@
-const app = require('express')();
-const bodyParser = require('body-parser');
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const Koa = require('koa');
+const bodyParser = require('koa-bodyparser');
+const http = require('http');
+const socketIo = require('socket.io');
 
 const logger = require('./middleware/logger');
-const cors = require('./middleware/cors');
-const socketHandler = require('./socketHandler');
+const { socketHandler } = require('./core/socketHandler');
 
-app.use(logger);
-app.use(cors);
-app.use(bodyParser.json({limit: '5mb'}));
+function createServer() {
+  const koaServer = new Koa();
+  koaServer.use(logger);
+  koaServer.use(bodyParser());
 
-socketHandler.initialize(io);
+  const server = http.createServer(koaServer.callback());
+  return server;
+}
 
-const port = process.env.PORT || 5000;
-http.listen(port, function(){
-	console.log('chat server listening on port: ' + port);
-});
+module.exports = createServer;
+
+if (!module.parent) {
+  const server = createServer();
+  const io = socketIo(server);
+  socketHandler.initialize(io);
+
+  const port = process.env.PORT || 5000;
+  server.listen(port, () => {
+    console.log(`chat server listening on port: ${port}`);
+  });
+}
