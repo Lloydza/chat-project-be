@@ -3,7 +3,7 @@ const Constants = require('../constants');
 /*
 *** DISCLAIMER ***
 This is supposed to be a fast-built prototype!
-In the real world, data (eg: connectedUsers) would be stored in a proper store.
+In the real world, data (eg: connectedUsers) would be stored in a proper data-store.
 */
 
 const socketHandler = {};

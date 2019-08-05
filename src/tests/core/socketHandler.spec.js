@@ -1,7 +1,6 @@
 const { expect } = require('chai');
 const socketIo = require('socket.io');
 const ioClient = require('socket.io-client');
-
 const Constants = require('../../constants');
 const createServer = require('../../index');
 const { socketHandler, connectedUsers } = require('../../core/socketHandler');
@@ -9,7 +8,6 @@ const { socketHandler, connectedUsers } = require('../../core/socketHandler');
 const server = createServer();
 const io = socketIo(server);
 const setupSockets = socketHandler.initialize(io);
-
 const port = process.env.PORT || 5000;
 const socketURL = `http://localhost:${port}`;
 const options = { transports: ['websocket'] };
